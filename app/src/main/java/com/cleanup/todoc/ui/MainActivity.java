@@ -1,7 +1,5 @@
 package com.cleanup.todoc.ui;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,9 +17,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.injection.DI;
-import com.cleanup.todoc.injection.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.viewmodel.TaskViewModel;
@@ -29,6 +27,7 @@ import com.cleanup.todoc.viewmodel.TaskViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+
 
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
@@ -38,6 +37,7 @@ import java.util.Date;
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
     private TaskViewModel mTaskViewModel;
+
     /**
      * List of all projects available in the application
      */
@@ -106,20 +106,14 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
 
+        mTaskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showAddTaskDialog();
             }
         });
-
-        this.configureViewModel();
-    }
-
-    private void configureViewModel() {
-        ViewModelFactory viewModelFactory = DI.provideViewModelFactory(this);
-        this.mTaskViewModel = new ViewModelProvider(this, viewModelFactory).get(TaskViewModel.class);
-        this.mTaskViewModel.init(1);
     }
 
     @Override
@@ -150,8 +144,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onDeleteTask(Task task) {
         tasks.remove(task);
+        mTaskViewModel.deleteTask(task);
         updateTasks();
-        this.mTaskViewModel.deleteTask(task.getId());
     }
 
     /**
@@ -188,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                         new Date().getTime()
                 );
 
-                this.mTaskViewModel.init(taskProject.getId());
                 addTask(task);
                 dialogInterface.dismiss();
             }
@@ -197,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
         }
-        // If dialog is aloready closed
+        // If dialog is already closed
         else {
             dialogInterface.dismiss();
         }
@@ -224,8 +217,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         tasks.add(task);
+        mTaskViewModel.createTask(task);
         updateTasks();
-        this.mTaskViewModel.createTask(task);
     }
 
     /**

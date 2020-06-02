@@ -1,5 +1,6 @@
 package com.cleanup.todoc.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
@@ -22,6 +23,7 @@ public class Task {
      * The unique identifier of the task
      */
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "task_id")
     private long id;
 
     /**

@@ -1,75 +1,63 @@
 package com.cleanup.todoc.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
-import com.cleanup.todoc.repository.ProjectDataRepository;
-import com.cleanup.todoc.repository.TaskDataRepository;
+import com.cleanup.todoc.repository.ProjectRepository;
+import com.cleanup.todoc.repository.TaskRepository;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class TaskViewModel extends ViewModel {
+public class TaskViewModel extends AndroidViewModel {
 
     //Repository
-    private final ProjectDataRepository mProjectDataRepository;
-    private final TaskDataRepository mTaskDataRepository;
-    private final Executor mExecutor;
+    private ProjectRepository mProjectRepository;
+    private TaskRepository mTaskRepository;
 
     //Data
     @Nullable
-    private LiveData<Project> currentProject;
+    private LiveData<List<Project>> mAllProject;
+    private LiveData<List<Task>> mAllTask;
 
-    public TaskViewModel(ProjectDataRepository mProjectDataRepository, TaskDataRepository mTaskDataRepository, Executor mExecutor) {
-        this.mProjectDataRepository = mProjectDataRepository;
-        this.mTaskDataRepository = mTaskDataRepository;
-        this.mExecutor = mExecutor;
-    }
+    public TaskViewModel(Application application) {
+        super(application);
+        mProjectRepository = new ProjectRepository(application);
+        mAllProject = mProjectRepository.getAllProject();
 
-    public void init(long projectId) {
-        if(this.currentProject != null) {
-            return;
-        }
-        currentProject = mProjectDataRepository.getProject(projectId);
+        mTaskRepository = new TaskRepository(application);
+        mAllTask = mTaskRepository.getAllTask();
     }
 
     //For Project
-    public LiveData<Project> getProject(long projectId) {
-        return this.currentProject;
+    public LiveData<List<Project>> getAllProject() {
+        return mAllProject;
     }
+
+    public void getProject(long id) {
+        mProjectRepository.getProject(id);
+    }
+
 
     //For Tasks
-    public LiveData<List<Task>> getTask(long projectId) {
-        return mTaskDataRepository.getTask(projectId);
+    public LiveData<List<Task>> getAllTask() {
+        return mAllTask;
     }
 
-    public void createTask(final Task task) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mTaskDataRepository.createTask(task);
-            }
-        });
+    public void getTask(long projectId) {
+        mTaskRepository.getTask(projectId);
     }
 
-    public void deleteTask(final long projectId) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mTaskDataRepository.deleteTask(projectId);
-            }
-        });
+    public void createTask(Task task) {
+        mTaskRepository.createTask(task);
     }
 
-    public void updateTask(final Task task) {
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mTaskDataRepository.updateTask(task);
-            }
-        });
+    public void deleteTask(Task task) {
+        mTaskRepository.deleteTask(task);
     }
 }
