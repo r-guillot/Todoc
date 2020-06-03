@@ -1,13 +1,20 @@
 package com.cleanup.todoc.ui;
 
+import android.app.AlertDialog;
+//import android.arch.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+//import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+//import android.support.annotation.NonNull;
+//import android.support.annotation.Nullable;
+//import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.widget.LinearLayoutManager;
+//import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +24,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+//import androidx.appcompat.app.AppCompatActivity;
+//import androidx.lifecycle.ViewModelProvider;
+//import androidx.lifecycle.ViewModelStoreOwner;
+//import androidx.recyclerview.widget.LinearLayoutManager;
+//import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
@@ -171,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             }
             // If both project and name of the task have been set
             else if (taskProject != null) {
+                mTaskViewModel.getProject(taskProject.getId());
                 // TODO: Replace this by id of persisted task
                 long id = (long) (Math.random() * 50000);
 

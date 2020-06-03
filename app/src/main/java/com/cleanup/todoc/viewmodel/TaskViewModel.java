@@ -1,10 +1,16 @@
 package com.cleanup.todoc.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+//import android.arch.lifecycle.AndroidViewModel;
+//import android.arch.lifecycle.LiveData;
+//import android.arch.lifecycle.ViewModel;
+//import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+//import androidx.lifecycle.AndroidViewModel;
+//import androidx.lifecycle.LiveData;
 
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
@@ -12,7 +18,6 @@ import com.cleanup.todoc.repository.ProjectRepository;
 import com.cleanup.todoc.repository.TaskRepository;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class TaskViewModel extends AndroidViewModel {
 

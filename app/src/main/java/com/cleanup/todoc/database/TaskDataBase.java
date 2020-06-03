@@ -1,11 +1,14 @@
 package com.cleanup.todoc.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+//import android.arch.persistence.room.Database;
+//import android.arch.persistence.room.Room;
+//import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.cleanup.todoc.database.dao.ProjectDAO;
@@ -47,7 +50,7 @@ public abstract class TaskDataBase extends RoomDatabase {
 
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
-        public void onOpen(@android.support.annotation.NonNull android.arch.persistence.db.SupportSQLiteDatabase db) {
+        public void onOpen(SupportSQLiteDatabase db) {
             super.onOpen(db);
             // If you want to keep data through app restarts,
             // comment out the following block
