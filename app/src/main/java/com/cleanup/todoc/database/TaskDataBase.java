@@ -50,7 +50,7 @@ public abstract class TaskDataBase extends RoomDatabase {
 
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
-        public void onOpen(SupportSQLiteDatabase db) {
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
             // If you want to keep data through app restarts,
             // comment out the following block
@@ -59,8 +59,13 @@ public abstract class TaskDataBase extends RoomDatabase {
                 // If you want to start with more words, just add them.
                 ProjectDAO Pdao = INSTANCE.projectDao();
                 Pdao.getAllProject();
-                TaskDAO Tdao = INSTANCE.taskDao();
-                Tdao.getAllTask();
+
+                Project project = new Project(1L, "Projet Tartampion", 0xFFEADAD1);
+                        Pdao.insertProject(project);
+                        project = new Project(2L, "Projet Lucidia", 0xFFB4CDBA);
+                        Pdao.insertProject(project);
+                        project = new Project(3L, "Projet Circus", 0xFFA3CED2);
+                        Pdao.insertProject(project);
             });
         }
     };}

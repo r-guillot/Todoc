@@ -23,7 +23,9 @@ import java.util.Comparator;
  */
 @Entity(foreignKeys = @ForeignKey(entity = Project.class,
         parentColumns = "project_id",
-        childColumns = "projectId"))
+        childColumns = "projectId",
+        onDelete = ForeignKey.CASCADE))
+
 
 public class Task {
     /**

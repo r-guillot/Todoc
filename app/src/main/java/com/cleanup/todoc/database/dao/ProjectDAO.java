@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 //import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.cleanup.todoc.model.Project;
@@ -22,4 +23,8 @@ public interface ProjectDAO {
 
     @Query("SELECT * FROM project_table WHERE project_id= :id;")
     LiveData<Project> getProject(long id);
+
+    @Insert
+    long insertProject(Project project);
+
 }

@@ -2,6 +2,7 @@ package com.cleanup.todoc.ui;
 
 import android.app.AlertDialog;
 //import android.arch.lifecycle.Observer;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 //import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
@@ -40,6 +41,7 @@ import com.cleanup.todoc.viewmodel.TaskViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -121,6 +123,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         mTaskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
+        mTaskViewModel.getAllProject().observe(this, new Observer<List<Project>>() {
+            @Override
+            public void onChanged(List<Project> projects) {
+                mTaskViewModel.getAllProject();
+            }
+        });
+
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                         new Date().getTime()
                 );
 
+                mTaskViewModel.createTask(task);
                 addTask(task);
                 dialogInterface.dismiss();
             }
@@ -231,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         tasks.add(task);
-        mTaskViewModel.createTask(task);
         updateTasks();
     }
 

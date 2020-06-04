@@ -28,4 +28,11 @@ public class ProjectRepository {
     public LiveData<Project> getProject(long projectId) {
         return mProjectDAO.getProject(projectId);
     }
+
+    public void createProject(Project project){
+        TaskDataBase.databaseWriteExecutor.execute(() -> {
+            mProjectDAO.insertProject(project);
+        });}
+
+
 }
