@@ -3,14 +3,8 @@ package com.cleanup.todoc.viewmodel;
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-//import android.arch.lifecycle.AndroidViewModel;
-//import android.arch.lifecycle.LiveData;
-//import android.arch.lifecycle.ViewModel;
-//import android.support.annotation.Nullable;
 
 import androidx.annotation.Nullable;
-//import androidx.lifecycle.AndroidViewModel;
-//import androidx.lifecycle.LiveData;
 
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;

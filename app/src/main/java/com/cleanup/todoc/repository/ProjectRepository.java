@@ -3,8 +3,6 @@ package com.cleanup.todoc.repository;
 import android.app.Application;
 import androidx.lifecycle.LiveData;
 
-//import androidx.lifecycle.LiveData;
-
 import com.cleanup.todoc.database.TaskDataBase;
 import com.cleanup.todoc.database.dao.ProjectDAO;
 import com.cleanup.todoc.model.Project;
@@ -34,5 +32,9 @@ public class ProjectRepository {
             mProjectDAO.insertProject(project);
         });}
 
-
+    //Delete
+    public void deleteProject(Project project){
+        TaskDataBase.databaseWriteExecutor.execute(() -> {
+            mProjectDAO.deleteAll();
+        });}
 }

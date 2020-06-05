@@ -1,8 +1,5 @@
 package com.cleanup.todoc.database;
 
-//import android.arch.persistence.room.Database;
-//import android.arch.persistence.room.Room;
-//import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -18,7 +15,6 @@ import com.cleanup.todoc.model.Task;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
 
 @Database(entities = {Project.class, Task.class}, version = 1, exportSchema = false)
 public abstract class TaskDataBase extends RoomDatabase {
@@ -41,6 +37,7 @@ public abstract class TaskDataBase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TaskDataBase.class, "task_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .allowMainThreadQueries()
                             .build();
                 }
             }
@@ -57,15 +54,18 @@ public abstract class TaskDataBase extends RoomDatabase {
             databaseWriteExecutor.execute(() -> {
                 // Populate the database in the background.
                 // If you want to start with more words, just add them.
-                ProjectDAO Pdao = INSTANCE.projectDao();
-                Pdao.getAllProject();
+                ProjectDAO PDao = INSTANCE.projectDao();
 
-                Project project = new Project(1L, "Projet Tartampion", 0xFFEADAD1);
-                        Pdao.insertProject(project);
-                        project = new Project(2L, "Projet Lucidia", 0xFFB4CDBA);
-                        Pdao.insertProject(project);
-                        project = new Project(3L, "Projet Circus", 0xFFA3CED2);
-                        Pdao.insertProject(project);
+
+                if (PDao.getAllProject() == null) {
+                    Project project = new Project(1L, "Projet Tartampion", 0xFFEADAD1);
+                    PDao.insertProject(project);
+                    project = new Project(2L, "Projet Lucidia", 0xFFB4CDBA);
+                    PDao.insertProject(project);
+                    project = new Project(3L, "Projet Circus", 0xFFA3CED2);
+                    PDao.insertProject(project);
+                }
             });
         }
-    };}
+    }
+    ;}
