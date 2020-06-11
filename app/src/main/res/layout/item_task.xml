@@ -16,7 +16,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:src="@drawable/bkg_oval"
-        tools:tint="@sample/tasks.json/data/backgroundTint" />
+        tools:tint="@sample/tasks.json/data/backgroundTint"
+        android:clickable="true"
+        android:focusable="true" />
 
 
     <androidx.appcompat.widget.AppCompatImageView

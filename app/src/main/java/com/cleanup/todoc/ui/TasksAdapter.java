@@ -1,18 +1,22 @@
 package com.cleanup.todoc.ui;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.cleanup.todoc.ColorEvent;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -34,6 +38,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     @NonNull
     private final DeleteTaskListener deleteTaskListener;
 
+    private Context context;
     /**
      * Instantiates a new TasksAdapter.
      *
@@ -42,6 +47,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
+        this.context = context;
     }
 
     /**
@@ -137,6 +143,14 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
                     if (tag instanceof Task) {
                         TaskViewHolder.this.deleteTaskListener.onDeleteTask((Task) tag);
                     }
+                }
+            });
+
+            imgProject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Object tag = v.getTag();
+                        EventBus.getDefault().post(new ColorEvent((Task) tag));
                 }
             });
         }

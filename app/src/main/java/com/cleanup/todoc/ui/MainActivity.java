@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +20,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cleanup.todoc.ColorEvent;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.viewmodel.TaskViewModel;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     @NonNull
     private final ArrayList<Task> tasks = new ArrayList<>();
+
+    private final ArrayList<Project> projects = new ArrayList<>();
 
 
     /**
@@ -126,6 +137,18 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actions, menu);
         return true;
@@ -197,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
-            else{
+            else {
                 dialogInterface.dismiss();
             }
         }
@@ -231,6 +254,37 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         getAllTasks();
     }
 
+    @Subscribe
+    public void colorDialog(ColorEvent event) {
+        ColorPickerDialogBuilder
+            .with(MainActivity.this)
+            .setTitle("Choose color")
+//            .initialColor()
+            .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+            .density(12)
+            .setOnColorSelectedListener(new OnColorSelectedListener() {
+                @Override
+                public void onColorSelected(int selectedColor) {
+                    Toast.makeText(MainActivity.this, selectedColor, Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setPositiveButton("ok", new ColorPickerClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                    long projectId = event.tag.getProjectId();
+                    Project project = Project.getProjectById(projectId);
+                    project.setColor(selectedColor);
+                }
+            })
+            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            })
+            .build()
+            .show();
+    }
     /**
      * Updates the list of tasks in the UI
      */
@@ -243,6 +297,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             listTasks.setVisibility(View.VISIBLE);
             adapter.updateTasks(tasks);
             switch (sortMethod) {
+
                 case ALPHABETICAL:
                     Collections.sort(tasks, new Task.TaskAZComparator());
                     break;
@@ -258,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             }
         }
     }
+
 
     /**
      * Returns the dialog allowing the user to create a new task.

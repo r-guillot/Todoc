@@ -1,6 +1,7 @@
 package com.cleanup.todoc.repository;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 
 import com.cleanup.todoc.database.TaskDataBase;
@@ -27,14 +28,21 @@ public class ProjectRepository {
         return mProjectDAO.getProject(projectId);
     }
 
-    public void createProject(Project project){
+    public void createProject(Project project) {
         TaskDataBase.databaseWriteExecutor.execute(() -> {
             mProjectDAO.insertProject(project);
-        });}
+        });
+    }
 
     //Delete
-    public void deleteProject(Project project){
+    public void deleteProject(Project project) {
         TaskDataBase.databaseWriteExecutor.execute(() -> {
             mProjectDAO.deleteAll();
-        });}
+        });
+    }
+
+    //Update Color
+    public int updateColor (long projectId, int set_color) {
+        return mProjectDAO.updateColor(projectId, set_color);
+    }
 }

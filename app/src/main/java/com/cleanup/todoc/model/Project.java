@@ -31,7 +31,7 @@ public class Project {
      * The hex (ARGB) code of the color associated to the project
      */
     @ColorInt
-    private final int color;
+    private int color;
 
     /**
      * Instantiates a new Project.
@@ -105,9 +105,13 @@ public class Project {
         return color;
     }
 
+    public void setColor(int color) {this.color = color;}
+
     @Override
     @NonNull
     public String toString() {
         return getName();
     }
+
+
 }

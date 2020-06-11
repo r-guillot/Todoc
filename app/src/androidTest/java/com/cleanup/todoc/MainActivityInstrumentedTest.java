@@ -19,6 +19,8 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cleanup.todoc.TestUtils.withRecyclerView;
@@ -38,6 +40,8 @@ public class MainActivityInstrumentedTest {
 
     public static int ITEM_COUNT;
 
+    public String spinnerTxt;
+
     @Test
     public void addAndRemoveTask() {
         MainActivity activity = rule.getActivity();
@@ -55,16 +59,23 @@ public class MainActivityInstrumentedTest {
         // Check that recyclerView is displayed
         assertThat(listTasks.getVisibility(), equalTo(View.VISIBLE));
         // Check that it contains one element only
-        assertThat(listTasks.getAdapter().getItemCount(), equalTo(ITEM_COUNT +1));
+        assertThat(listTasks.getAdapter().getItemCount(), equalTo(ITEM_COUNT + 1));
 
         onView(ViewMatchers.withId(R.id.list_tasks)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()));
 
-        if (listTasks.getAdapter().getItemCount() == 0){
+        if (listTasks.getAdapter().getItemCount() == 0) {
             // Check that lblTask is displayed
             assertThat(lblNoTask.getVisibility(), equalTo(View.VISIBLE));
             // Check that recyclerView is not displayed anymore
             assertThat(listTasks.getVisibility(), equalTo(View.GONE));
         }
+    }
+
+    public void getProjectSpinner(String spinnerTxt) {
+        onView(withId(R.id.fab_add_task)).perform(click());
+        onView(withText(R.string.add_task)).check(matches(isDisplayed()));
+        onView(withId(R.id.project_spinner)).perform(click());
+        onView(withText(spinnerTxt)).inRoot(isPlatformPopup()).perform(click());
     }
 
     @Test
@@ -74,29 +85,28 @@ public class MainActivityInstrumentedTest {
         RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
         ITEM_COUNT = listTasks.getAdapter().getItemCount();
 
-        if(ITEM_COUNT > 0) {
-            for (int i = ITEM_COUNT; i > 0; i --){
+        if (ITEM_COUNT > 0) {
+            for (int i = ITEM_COUNT; i > 0; i--) {
                 onView(ViewMatchers.withId(R.id.list_tasks)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()));
             }
         }
 
-        onView(withId(R.id.fab_add_task)).perform(click());
+        spinnerTxt = "Projet Circus";
+        getProjectSpinner(spinnerTxt);
         onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));
         onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.fab_add_task)).perform(click());
+
+        spinnerTxt = "Projet Tartampion";
+        getProjectSpinner(spinnerTxt);
         onView(withId(R.id.txt_task_name)).perform(replaceText("zzz Tâche example"));
         onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.fab_add_task)).perform(click());
+
+        spinnerTxt = "Projet Lucidia";
+        getProjectSpinner(spinnerTxt);
         onView(withId(R.id.txt_task_name)).perform(replaceText("hhh Tâche example"));
         onView(withId(android.R.id.button1)).perform(click());
 
         assertThat(listTasks.getAdapter().getItemCount(), equalTo(3));
-//        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.lbl_task_name))
-//                .check(matches(withText("aaa Tâche example")));
-//        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(1, R.id.lbl_task_name))
-//                .check(matches(withText("zzz Tâche example")));
-//        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_task_name))
-//                .check(matches(withText("hhh Tâche example")));
 
         // Sort alphabetical
         onView(withId(R.id.action_filter)).perform(click());
@@ -140,8 +150,8 @@ public class MainActivityInstrumentedTest {
 
         ITEM_COUNT = listTasks.getAdapter().getItemCount();
 
-        if(ITEM_COUNT > 0) {
-            for (int i = ITEM_COUNT; i > 0; i --){
+        if (ITEM_COUNT > 0) {
+            for (int i = ITEM_COUNT; i > 0; i--) {
                 onView(ViewMatchers.withId(R.id.list_tasks)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()));
             }
         }

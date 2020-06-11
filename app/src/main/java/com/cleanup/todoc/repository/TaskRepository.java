@@ -2,6 +2,7 @@ package com.cleanup.todoc.repository;
 
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 
 import com.cleanup.todoc.database.TaskDataBase;
@@ -17,7 +18,7 @@ public class TaskRepository {
     public TaskRepository(Application application) {
         TaskDataBase db = TaskDataBase.getDatabase(application);
         mTaskDAO = db.taskDao();
-        mAllTask= mTaskDAO.getAllTask();
+        mAllTask = mTaskDAO.getAllTask();
     }
 
     //Get Tasks
@@ -25,19 +26,21 @@ public class TaskRepository {
         return mAllTask;
     }
 
-   public LiveData<List<Task>> getTask(long projectId) {
+    public LiveData<List<Task>> getTask(long projectId) {
         return mTaskDAO.getTask(projectId);
     }
 
     //Create
-    public void createTask(Task task){
+    public void createTask(Task task) {
         TaskDataBase.databaseWriteExecutor.execute(() -> {
             mTaskDAO.insertTask(task);
-        });}
+        });
+    }
 
     //Delete
-    public void deleteTask(Task task){
+    public void deleteTask(Task task) {
         TaskDataBase.databaseWriteExecutor.execute(() -> {
             mTaskDAO.deleteItem(task);
-        });}
+        });
+    }
 }

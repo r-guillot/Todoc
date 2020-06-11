@@ -24,6 +24,7 @@ public abstract class TaskDataBase extends RoomDatabase {
 
     //DAO
     public abstract ProjectDAO projectDao();
+
     public abstract TaskDAO taskDao();
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -67,5 +68,5 @@ public abstract class TaskDataBase extends RoomDatabase {
                 }
             });
         }
-    }
-    ;}
+    };
+}
