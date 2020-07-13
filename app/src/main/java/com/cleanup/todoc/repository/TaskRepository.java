@@ -26,10 +26,6 @@ public class TaskRepository {
         return mAllTask;
     }
 
-    public LiveData<List<Task>> getTask(long projectId) {
-        return mTaskDAO.getTask(projectId);
-    }
-
     //Create
     public void createTask(Task task) {
         TaskDataBase.databaseWriteExecutor.execute(() -> {

@@ -35,10 +35,6 @@ public class TaskViewModel extends AndroidViewModel {
     }
 
     //For Project
-    public LiveData<List<Project>> getAllProject() {
-        return mAllProject;
-    }
-
     public void getProject(long id) {
         mProjectRepository.getProject(id);
     }
@@ -47,10 +43,6 @@ public class TaskViewModel extends AndroidViewModel {
     //For Tasks
     public LiveData<List<Task>> getAllTask() {
         return mAllTask;
-    }
-
-    public void getTask(long projectId) {
-        mTaskRepository.getTask(projectId);
     }
 
     public void createTask(Task task) {

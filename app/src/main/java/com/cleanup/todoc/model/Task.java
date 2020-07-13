@@ -31,6 +31,7 @@ public class Task {
     /**
      * The unique identifier of the project associated to the task
      */
+    @ColumnInfo(index = true)
     private long projectId;
 
     /**

@@ -105,8 +105,6 @@ public class Project {
         return color;
     }
 
-    public void setColor(int color) {this.color = color;}
-
     @Override
     @NonNull
     public String toString() {

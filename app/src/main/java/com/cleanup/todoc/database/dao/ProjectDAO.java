@@ -24,7 +24,4 @@ public interface ProjectDAO {
     @Query("DELETE FROM project_table")
     void deleteAll();
 
-    @Query("UPDATE project_table SET color = :set_color WHERE project_id= :id;")
-    int updateColor (long id, int set_color);
-
 }

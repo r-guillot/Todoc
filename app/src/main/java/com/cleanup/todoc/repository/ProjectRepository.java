@@ -27,22 +27,4 @@ public class ProjectRepository {
     public LiveData<Project> getProject(long projectId) {
         return mProjectDAO.getProject(projectId);
     }
-
-    public void createProject(Project project) {
-        TaskDataBase.databaseWriteExecutor.execute(() -> {
-            mProjectDAO.insertProject(project);
-        });
-    }
-
-    //Delete
-    public void deleteProject(Project project) {
-        TaskDataBase.databaseWriteExecutor.execute(() -> {
-            mProjectDAO.deleteAll();
-        });
-    }
-
-    //Update Color
-    public int updateColor (long projectId, int set_color) {
-        return mProjectDAO.updateColor(projectId, set_color);
-    }
 }
